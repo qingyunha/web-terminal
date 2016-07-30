@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSON-RPC Demo for JQuery Terminal Emulator</title>
+    <meta name="author" content="Jakub Jankiewicz - jcubic&#64;onet.pl"/>
+    <meta name="Description" content="Demonstration for JQuery Terminal Emulator using call automaticly JSON-RPC service (in php) with authentication."/>
+    <link rel="sitemap" type="application/xml" title="Sitemap" href=""/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <script src="static/js/jquery-1.7.1.min.js"></script>
+    <script src="static/js/jquery.mousewheel-min.js"></script>
+    <script src="static/js/jquery.terminal.min.js"></script>
+    <script type="text/javascript"
+src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <link href="static/css/jquery.terminal.css" rel="stylesheet"/>
+  </head>
+<body>
+
+<script>
+jQuery(document).ready(function($) {
+    var socket = new WebSocket('ws://' + document.domain + ':' + location.port + '/connect');
+    var firts = true;
+    $('body').terminal(function(command, term) {
+        if (command != ''){
+            socket.send(command);
+            if (firts){
+                socket.onmessage = function(event) {
+                    console.log(event)
+                    term.echo(event.data);
+                };
+                firts = false;
+            }
+        }
+    });
+});
+
+</script>
+</body>
